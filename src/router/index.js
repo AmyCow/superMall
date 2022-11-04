@@ -7,7 +7,8 @@ const routes = [
   {
     path: '',
     redirect: 'Home'
-  }, {
+  },
+  {
     name: 'Home',
     path: '/home',
     component: () => import(/* webpackChunkName: home */ 'views/home/Home')
@@ -15,14 +16,21 @@ const routes = [
     name: 'Category',
     path: '/category',
     component: () => import(/* webpackChunkName: category */ 'views/category/Category')
-  }, {
+  },
+  {
     name: 'Cart',
     path: '/cart',
     component: () => import(/* webpackChunkName: cart */ 'views/cart/Cart')
-  }, {
+  },
+  {
     name: 'Profile',
     path: '/profile',
     component: () => import(/* webpackChunkName: profile */ 'views/profile/Profile')
+  },
+  {
+    name: 'Detail',
+    path: '/detail/:id',
+    component: () => import(/* webpackChunkName: detail */ 'views/detail/Detail')
   }
 ]
 

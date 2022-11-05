@@ -27,13 +27,14 @@ export default {
   },
   data () {
     return {
-      titleList: ['参数', '商品', '评论', '推荐'],
+      titleList: ['商品', '参数', '评论', '推荐'],
       currentIndex: 0
     }
   },
   methods: {
     titleClick (index) {
       this.currentIndex = index
+      this.$emit('titleClick', index)
     },
     backClick () {
       this.$router.back()

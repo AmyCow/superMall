@@ -36,7 +36,6 @@ import NavBar from 'components/common/navBar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
 import GoodsList from 'components/content/goods/GoodsList'
 import Scroll from 'components/common/scroll/Scroll'
-import BackTop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from './childComponents/HomeSwiper'
 import RecommandView from './childComponents/RecommandView'
@@ -45,7 +44,7 @@ import FeatureView from './childComponents/FeatureView'
 import { getHomeMultidata, getHomeGoods } from 'network/home'
 
 import { debounce } from 'common/utils'
-import { itemListenerMixins } from 'common/mixins'
+import { itemListenerMixins, backTopMixins } from 'common/mixins'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
@@ -54,13 +53,12 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
-    BackTop,
 
     HomeSwiper,
     RecommandView,
     FeatureView
   },
-  mixins: [itemListenerMixins],
+  mixins: [itemListenerMixins, backTopMixins],
   data () {
     return {
       banner: [],
@@ -126,7 +124,7 @@ export default {
       this.$refs.imageScroll.scrollTop(0, 0)
     },
     contentScroll (position) {
-      this.isShowBackTop = (-position.y) > 1000
+      this.showBackTop(position)
       this.isTabShow = (-position.y) >= this.tabOffsetTop
     },
     loadMore () {

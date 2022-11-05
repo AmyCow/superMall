@@ -11,11 +11,9 @@
         />
       </scroll>
       <scroll class="category__info__height" ref="imageScroll">
-        <div class="category__content__info">
-          <sub-category-list :subCategory="subcategory"/>
-          <tab-control :titles="titleList" @tabClick="changeTabItem"/>
-          <goods-list :goods="showGoods"/>
-        </div>
+        <sub-category-list :subCategory="subcategory"/>
+        <tab-control :titles="titleList" @tabClick="changeTabItem"/>
+        <goods-list :goods="showGoods"/>
       </scroll>
     </div>
   </div>
@@ -86,6 +84,7 @@ export default {
       })
     },
     changeSubCategory (item) {
+      this.$refs.imageScroll.scrollTop(0, 0, 1)
       this.maitKey = item.maitKey
       this.miniWallkey = item.miniWallkey
       this.getSubcategory(this.maitKey)

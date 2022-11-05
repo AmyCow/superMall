@@ -1,12 +1,12 @@
 <template>
   <div class="params">
     <table class="params__table" v-if="detailParams.sizes">
-      <tr v-for="item in detailParams.sizes[0]" :key="item.key">
+      <tr v-for="(item,index) in detailParams.sizes[0]" :key="index">
         <td v-for="size in item" :key="size">{{size}}</td>
       </tr>
     </table>
     <table class="params__table">
-      <tr v-for="item in detailParams.info" :key="item.key">
+      <tr v-for="(item,index) in detailParams.info" :key="index">
         <td class="params__table__title">{{item.key}}</td>
         <td class="params__table__info">{{item.value}}</td>
       </tr>

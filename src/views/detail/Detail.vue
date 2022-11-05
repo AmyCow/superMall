@@ -1,12 +1,14 @@
 <template>
   <div class="detail">
     <detail-nav/>
-    <scroll class="detail__content" ref="detailScroll">
+    <scroll class="detail__content" ref="imageScroll">
       <detail-swiper :top-images="topImages" @imageLoad="imageLoad"/>
       <detail-base-info :good="good"/>
       <detail-shop-info :shop-info="shopInfo"/>
       <detail-common-info :common-info="commonInfo" @imgLoad="imageLoad"/>
       <detail-params :detail-params="detailParams"/>
+      <detail-comment :comment-list="commentList"/>
+      <detail-recommend :recommend="recommend"/>
     </scroll>
   </div>
 </template>
@@ -20,8 +22,11 @@ import DetailBaseInfo from './childrenComponents/DetailBaseInfo'
 import DetailShopInfo from './childrenComponents/DetailShopInfo'
 import DetailCommonInfo from './childrenComponents/DetailCommonInfo'
 import DetailParams from './childrenComponents/DetailParams'
+import DetailComment from './childrenComponents/DetailComment'
+import DetailRecommend from './childrenComponents/DetailRecommend'
 
-import { getGoodDetail, Good, ShopInfo, Parm } from 'network/details'
+import { getGoodDetail, Good, ShopInfo, Parm, recommend } from 'network/details'
+import { itemListenerMixins } from 'common/mixins'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Detail',
@@ -33,12 +38,11 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailCommonInfo,
-    DetailParams
+    DetailParams,
+    DetailComment,
+    DetailRecommend
   },
-  created () {
-    this.id = this.$route.params.id
-    this.getDetail(this.id)
-  },
+  mixins: [itemListenerMixins],
   data () {
     return {
       id: '',
@@ -46,8 +50,18 @@ export default {
       good: {},
       shopInfo: {},
       commonInfo: {},
-      detailParams: {}
+      detailParams: {},
+      commentList: [],
+      recommend: []
     }
+  },
+  created () {
+    this.id = this.$route.params.id
+    this.getDetail(this.id)
+    this.getRecommend()
+  },
+  mounted () {
+
   },
   methods: {
     getDetail (id) {
@@ -58,11 +72,20 @@ export default {
         this.shopInfo = new ShopInfo(data.shopInfo)
         this.commonInfo = data.detailInfo
         this.detailParams = new Parm(data.itemParams.info, data.itemParams.rule || '')
+        this.commentList = data.rate.list
       })
     },
     imageLoad () {
-      this.$refs.detailScroll.refresh()
+      this.$refs.imageScroll.refresh()
+    },
+    getRecommend () {
+      recommend().then(res => {
+        this.recommend = res.data.list
+      })
     }
+  },
+  destroyed () {
+
   }
 }
 </script>

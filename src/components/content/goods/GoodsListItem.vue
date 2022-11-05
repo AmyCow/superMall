@@ -1,6 +1,6 @@
 <template>
-  <div class="goodItem" @click="detail">
-    <img :src="goodItem.img || goodItem.show.img" :key="goodItem.shopId || goodItem.tradeItemId" alt="" @load="imageLoad">
+  <div class="goodItem" @click="detail" v-if="Object.keys(goodItem).length !== 0">
+    <img :src="showPic" :key="goodItem.shopId || goodItem.tradeItemId" alt="" @load="imageLoad">
     <div class="goodItem__content">
       <p class="goodItem__content__title">{{goodItem.title}}</p>
       <span class="goodItem__content__price">{{goodItem.price}}</span>
@@ -25,7 +25,14 @@ export default {
       this.$bus.$emit('itemImgLoaded')
     },
     detail () {
-      this.$router.push('/detail/' + this.goodItem.iid)
+      if (this.goodItem.iid) {
+        this.$router.push('/detail/' + this.goodItem.iid)
+      }
+    }
+  },
+  computed: {
+    showPic () {
+      return this.goodItem.image || this.goodItem.img || this.goodItem.show.img
     }
   }
 }

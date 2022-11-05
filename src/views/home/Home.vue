@@ -10,7 +10,7 @@
                 v-show="isTabShow"
     />
     <scroll class="home__center"
-            ref="scroll"
+            ref="imageScroll"
             :probe-type="3"
             :pull-up-load="true"
             @scroll="contentScroll"
@@ -45,6 +45,7 @@ import FeatureView from './childComponents/FeatureView'
 import { getHomeMultidata, getHomeGoods } from 'network/home'
 
 import { debounce } from 'common/utils'
+import { itemListenerMixins } from 'common/mixins'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Home',
@@ -59,6 +60,7 @@ export default {
     RecommandView,
     FeatureView
   },
+  mixins: [itemListenerMixins],
   data () {
     return {
       banner: [],
@@ -85,10 +87,7 @@ export default {
     this.getHomeGoods('sell')
   },
   mounted () {
-    const refresh = debounce(this.$refs.scroll.refresh)
-    this.$bus.$on('itemImgLoaded', () => {
-      refresh()
-    })
+
   },
   methods: {
     getHomeGoods (type) {
@@ -96,7 +95,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
-        this.$refs.scroll.finishPullUp()
+        this.$refs.imageScroll.finishPullUp()
       })
     },
     getHomeMultidata () {
@@ -124,7 +123,7 @@ export default {
       this.$refs.tab.currentIndex = index
     },
     backTop () {
-      this.$refs.scroll.scrollTop(0, 0)
+      this.$refs.imageScroll.scrollTop(0, 0)
     },
     contentScroll (position) {
       this.isShowBackTop = (-position.y) > 1000
@@ -143,11 +142,11 @@ export default {
     }
   },
   activated () {
-    this.$refs.scroll.scrollTop(0, this.scrollPosition, 1)
-    this.$refs.scroll.refresh()
+    this.$refs.imageScroll.scrollTop(0, this.scrollPosition, 1)
+    this.$refs.imageScroll.refresh()
   },
   deactivated () {
-    this.scrollPosition = this.$refs.scroll.scrollY()
+    this.scrollPosition = this.$refs.imageScroll.scrollY()
   }
 }
 </script>

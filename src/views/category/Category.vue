@@ -10,7 +10,7 @@
                   @changeSubCategory="changeSubCategory"
         />
       </scroll>
-      <scroll class="category__info__height" ref="infoScroll">
+      <scroll class="category__info__height" ref="imageScroll">
         <div class="category__content__info">
           <sub-category-list :subCategory="subcategory"/>
           <tab-control :titles="titleList" @tabClick="changeTabItem"/>
@@ -31,7 +31,7 @@ import MenuBar from './childrenComponents/MenuBar'
 import SubCategoryList from './childrenComponents/SubCategoryList'
 
 import { category, subcategory, detail } from 'network/category'
-import { debounce } from 'common/utils'
+import { itemListenerMixins } from 'common/mixins'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Category',
@@ -44,6 +44,7 @@ export default {
     MenuBar,
     SubCategoryList
   },
+  mixins: [itemListenerMixins],
   data () {
     return {
       menuList: [],
@@ -57,7 +58,7 @@ export default {
         new: []
       },
       currentType: 'pop',
-      infoScrollPosition: 0,
+      imageScrollPosition: 0,
       menuScrollPosition: 0
     }
   },
@@ -65,10 +66,7 @@ export default {
     this.category()
   },
   mounted () {
-    const refresh = debounce(this.$refs.infoScroll.refresh)
-    this.$bus.$on('itemImgLoaded', () => {
-      refresh()
-    })
+
   },
   methods: {
     getSubcategory (maitKey) {
@@ -126,12 +124,12 @@ export default {
   activated () {
     this.$refs.menuScroll.scrollTop(0, this.menuScrollPosition, 1)
     this.$refs.menuScroll.refresh()
-    this.$refs.infoScroll.scrollTop(0, this.infoScrollPosition, 1)
-    this.$refs.infoScroll.refresh()
+    this.$refs.imageScroll.scrollTop(0, this.imageScrollPosition, 1)
+    this.$refs.imageScroll.refresh()
   },
   deactivated () {
     this.menuScrollPosition = this.$refs.menuScroll.scrollY()
-    this.infoScrollPosition = this.$refs.infoScroll.scrollY()
+    this.imageScrollPosition = this.$refs.imageScroll.scrollY()
   }
 }
 </script>

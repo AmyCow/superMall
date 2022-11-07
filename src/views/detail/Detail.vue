@@ -15,7 +15,7 @@
       <detail-recommend ref="recommend" :recommend="recommend"/>
     </scroll>
     <back-top @click.native="backTop" v-show="isShowBackTop"/>
-    <detail-bottom-bar/>
+    <detail-bottom-bar @addCart="addToCart"/>
   </div>
 </template>
 
@@ -34,6 +34,8 @@ import DetailBottomBar from './childrenComponents/DetailBottomBar'
 
 import { getGoodDetail, Good, ShopInfo, Parm, recommend } from 'network/details'
 import { itemListenerMixins, backTopMixins } from 'common/mixins'
+
+import { mapActions } from 'vuex'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'Detail',
@@ -74,6 +76,9 @@ export default {
 
   },
   methods: {
+    ...mapActions({
+      addCart: 'addToCart'
+    }),
     getDetail (id) {
       getGoodDetail(id).then(res => {
         const data = res.result
@@ -112,6 +117,18 @@ export default {
           this.$refs.detailNav.currentIndex = this.currentIndex
         }
       }
+    },
+    addToCart () {
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.good.title
+      product.desc = this.good.desc
+      product.price = this.good.nowPrice
+      product.iid = this.id
+      this.addCart(product).then(res => {
+        this.$toast.show(res)
+      })
+      // this.$store.dispatch('addToCart', product)
     }
   },
   destroyed () {

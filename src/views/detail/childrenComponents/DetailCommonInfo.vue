@@ -10,7 +10,7 @@
         {{commonInfo.detailImage[0].key}}
       </p>
       <div class="commonInfo__img__info" v-for="item in commonInfo.detailImage[0].list" :key="item">
-        <img :src="item" alt="" :key="item" @load="imgLoad">
+        <img v-lazy="item" alt="" :key="item" @load="imgLoad">
       </div>
     </div>
   </div>

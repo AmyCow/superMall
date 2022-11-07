@@ -14,18 +14,19 @@
         <span>收藏</span>
       </div>
     </div>
-    <div class="bottomBar__cart">
-      加入购物车
-    </div>
-    <div class="bottomBar__buy">
-      购买
-    </div>
+    <div class="bottomBar__cart" @click="addCart">加入购物车</div>
+    <div class="bottomBar__buy">购买</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DetailBottomBar'
+  name: 'DetailBottomBar',
+  methods: {
+    addCart () {
+      this.$emit('addCart')
+    }
+  }
 }
 </script>
 

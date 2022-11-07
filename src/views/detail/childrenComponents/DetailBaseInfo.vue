@@ -12,7 +12,7 @@
     </div>
     <div class="baseInfo__service">
       <div class="baseInfo__service__detail" v-for="(item,index) in good.services" :key="index">
-        <img v-show="item.icon" :src="item.icon"/>
+        <img v-show="item.icon" v-lazy="item.icon"/>
         <span>{{item.name}}</span>
       </div>
     </div>
